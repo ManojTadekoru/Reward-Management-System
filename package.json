@@ -1,0 +1,69 @@
+{
+  "name": "RewardManagementSystem",
+  "version": "1.0.0",
+  "dependencies": {
+    "@cap-js/hana": "^2",
+    "@sap/cds": "^9",
+    "@sap/xssec": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^2.4",
+    "@sap/cds-dk": "^9",
+    "cds-plugin-ui5": "^0.17.0",
+    "rimraf": "^5.0.5",
+    "mbt": "^1.2.49"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-rewardsystem": "cds watch --open com.system.rewardsystem/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "undeploy": "cf undeploy RewardManagementSystem --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "watch-retailstaff": "cds watch --open retailstaff/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-customers": "cds watch --open customers/index.html?sap-ui-xx-viewCache=false --livereload false"
+  },
+  "private": true,
+  "cds": {
+    "requires": {
+      "auth": {
+        "[development]": {
+          "kind": "mocked",
+          "users": {
+            "admin": {
+              "password": "admin",
+              "roles": [
+                "Admin"
+              ]
+            },
+            "retailstaff": {
+              "password": "retailstaff",
+              "roles": [
+                "RetailStaff"
+              ]
+            },
+            "customer": {
+              "password": "customer",
+              "roles": [
+                "Customer"
+              ]
+            }
+          }
+        }
+      },
+      "[production]": {
+        "db":"hana",
+        "auth": {
+          "kind": "xsuaa"
+        }
+      }
+    }
+  },
+  "workspaces": [
+    "app/*"
+  ],
+  "sapux": [
+    "app/rewardsystem",
+    "app/retailstaff",
+    "app/customers"
+  ]
+}

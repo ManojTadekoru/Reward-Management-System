@@ -1,0 +1,4 @@
+tierPolicyID,tier,minPoints,maxPoints,description,isActive
+11111111-aaaa-aaaa-aaaa-111111111111,Bronze,0,499,Bronze customer tier,true
+22222222-bbbb-bbbb-bbbb-222222222222,Silver,500,999,Silver customer tier,true
+33333333-cccc-cccc-cccc-333333333333,Gold,1000,,Gold customer tier,true

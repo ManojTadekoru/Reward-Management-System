@@ -1,0 +1,332 @@
+@baseUrl = http://localhost:4004/loyalty
+
+# ============================================================
+# 1. READ - CUSTOMERS
+# ============================================================
+
+### Get all customers
+GET {{baseUrl}}/Customers
+Authorization: Basic customer:customer
+Accept: application/json
+
+
+### Get one customer
+GET {{baseUrl}}/Customers(11111111-1111-1111-1111-111111111111)
+Authorization: Basic customer:customer
+Accept: application/json
+
+
+# ============================================================
+# 2. ADMIN - REWARD POLICIES
+# ============================================================
+
+### Get reward policies
+GET {{baseUrl}}/RewardPolicies
+Authorization: Basic admin:admin
+Accept: application/json
+
+
+### Create Store Reward Policy
+POST {{baseUrl}}/RewardPolicies
+Authorization: Basic admin:admin
+Content-Type: application/json
+
+{
+    "policyID": "11111111-aaaa-aaaa-aaaa-111111111111",
+    "channel": "Store",
+    "pointsRate": 0.05,
+    "description": "Store purchase reward",
+    "isActive": true
+}
+
+###
+PATCH {{baseUrl}}/RewardPolicies(aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa)
+Authorization: Basic admin:admin
+Content-Type: application/json
+
+{
+    "pointsRate": 0.08,
+    "description": "Updated Store purchase reward"
+}
+
+
+### Create Online Reward Policy
+POST {{baseUrl}}/RewardPolicies
+Authorization: Basic admin:admin
+Content-Type: application/json
+
+{
+    "policyID": "22222222-bbbb-bbbb-bbbb-222222222222",
+    "channel": "Online",
+    "pointsRate": 0.10,
+    "description": "Online purchase bonus",
+    "isActive": true
+}
+
+
+###
+PATCH {{baseUrl}}/RewardPolicies(bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb)
+Authorization: Basic admin:admin
+Content-Type: application/json
+
+{
+    "pointsRate": 0.15,
+    "description": "Updated Online purchase bonus"
+}
+
+# ============================================================
+# 3. ADMIN - TIER POLICIES
+# ============================================================
+
+### Get Tier Policies
+GET {{baseUrl}}/TierPolicies
+Authorization: Basic admin:admin
+Accept: application/json
+
+
+### Create Bronze Tier
+POST {{baseUrl}}/TierPolicies
+Authorization: Basic admin:admin
+Content-Type: application/json
+
+{
+    "tierPolicyID": "11111111-aaaa-aaaa-aaaa-111111111111",
+    "tier": "Bronze",
+    "minPoints": 0,
+    "maxPoints": 499,
+    "description": "Bronze customer tier",
+    "isActive": true
+}
+
+
+###
+PATCH {{baseUrl}}/TierPolicies(11111111-aaaa-aaaa-aaaa-111111111111)
+Authorization: Basic admin:admin
+Content-Type: application/json
+
+{
+    "maxPoints": 399,
+    "description": "Updated Bronze tier"
+}
+
+
+### Create Silver Tier
+POST {{baseUrl}}/TierPolicies
+Authorization: Basic admin:admin
+Content-Type: application/json
+
+{
+    "tierPolicyID": "22222222-bbbb-bbbb-bbbb-222222222222",
+    "tier": "Silver",
+    "minPoints": 500,
+    "maxPoints": 999,
+    "description": "Silver customer tier",
+    "isActive": true
+}
+
+###
+PATCH {{baseUrl}}/TierPolicies(22222222-bbbb-bbbb-bbbb-222222222222)
+Authorization: Basic admin:admin
+Content-Type: application/json
+
+{
+    "minPoints": 400,
+    "maxPoints": 999,
+    "description": "Updated Silver tier"
+}
+
+
+### Create Gold Tier
+POST {{baseUrl}}/TierPolicies
+Authorization: Basic admin:admin
+Content-Type: application/json
+
+{
+    "tierPolicyID": "33333333-cccc-cccc-cccc-333333333333",
+    "tier": "Gold",
+    "minPoints": 1000,
+    "description": "Gold customer tier",
+    "isActive": true
+}
+
+###
+PATCH {{baseUrl}}/TierPolicies(33333333-cccc-cccc-cccc-333333333333)
+Authorization: Basic admin:admin
+Content-Type: application/json
+
+{
+    "minPoints": 1000,
+    "description": "Updated Gold tier"
+}
+
+
+# ============================================================
+# 4. RETAIL STAFF - CREATE STORE TRANSACTION
+# ============================================================
+
+### Create Store Transaction
+POST {{baseUrl}}/Transactions
+Authorization: Basic retailstaff:retailstaff
+Content-Type: application/json
+
+{
+    "txnID": "55555555-5555-5555-5555-555555555555",
+    "customer_customerID": "11111111-1111-1111-1111-111111111111",
+    "channel": "Store",
+    "amount": 2000,
+    "txnDate": "2026-08-12T10:00:00Z"
+}
+
+
+# ============================================================
+# 5. RETAIL STAFF - CREATE ONLINE TRANSACTION
+# ============================================================
+
+### Create Online Transaction
+POST {{baseUrl}}/Transactions
+Authorization: Basic retailstaff:retailstaff
+Content-Type: application/json
+
+{
+    "txnID": "66666666-6666-6666-6666-666666666666",
+    "customer_customerID": "11111111-1111-1111-1111-111111111111",
+    "channel": "Online",
+    "amount": 3000,
+    "txnDate": "2026-08-12T11:00:00Z"
+}
+
+
+# ============================================================
+# 6. CHECK CUSTOMER POINTS
+# ============================================================
+
+### Get customer after transactions
+GET {{baseUrl}}/Customers(11111111-1111-1111-1111-111111111111)
+Authorization: Basic customer:customer
+Accept: application/json
+
+
+# ============================================================
+# 7. CUSTOMER - VIEW PURCHASE HISTORY
+# ============================================================
+
+### Get customer's transactions
+GET {{baseUrl}}/Customers(11111111-1111-1111-1111-111111111111)/transactions
+Authorization: Basic customer:customer
+Accept: application/json
+
+
+# ============================================================
+# 8. CUSTOMER - REDEEM POINTS
+# ============================================================
+
+### Successful Redemption
+POST {{baseUrl}}/Redemptions
+Authorization: Basic customer:customer
+Content-Type: application/json
+
+{
+    "redeemID": "77777777-7777-7777-7777-777777777777",
+    "customer_customerID": "11111111-1111-1111-1111-111111111111",
+    "pointsUsed": 200,
+    "redeemDate": "2026-08-12T12:00:00Z",
+    "remarks": "Discount Coupon"
+}
+
+
+# ============================================================
+# 9. CHECK CUSTOMER AFTER REDEMPTION
+# ============================================================
+
+### Get customer after redemption
+GET {{baseUrl}}/Customers(11111111-1111-1111-1111-111111111111)
+Authorization: Basic customer:customer
+Accept: application/json
+
+
+# ============================================================
+# 10. VIEW REDEMPTIONS
+# ============================================================
+
+### Get all redemptions
+GET {{baseUrl}}/Redemptions
+Authorization: Basic customer:customer
+Accept: application/json
+
+
+### Get customer redemptions
+GET {{baseUrl}}/Customers(11111111-1111-1111-1111-111111111111)/redemptions
+Authorization: Basic customer:customer
+Accept: application/json
+
+
+# ============================================================
+# 11. NEGATIVE TEST - INSUFFICIENT POINTS
+# ============================================================
+
+### This request MUST FAIL
+POST {{baseUrl}}/Redemptions
+Authorization: Basic customer:customer
+Content-Type: application/json
+
+{
+    "redeemID": "88888888-8888-8888-8888-888888888888",
+    "customer_customerID": "11111111-1111-1111-1111-111111111111",
+    "pointsUsed": 999999,
+    "redeemDate": "2026-08-12T13:00:00Z",
+    "remarks": "Insufficient Points Test"
+}
+
+
+# ============================================================
+# 12. NEGATIVE TEST - INVALID CHANNEL
+# ============================================================
+
+### This request MUST FAIL
+POST {{baseUrl}}/Transactions
+Authorization: Basic retailstaff:retailstaff
+Content-Type: application/json
+
+{
+    "txnID": "99999999-9999-9999-9999-999999999999",
+    "customer_customerID": "11111111-1111-1111-1111-111111111111",
+    "channel": "Mobile",
+    "amount": 1000,
+    "txnDate": "2026-08-12T14:00:00Z"
+}
+
+
+# ============================================================
+# 13. NEGATIVE TEST - NEGATIVE AMOUNT
+# ============================================================
+
+### This request MUST FAIL
+POST {{baseUrl}}/Transactions
+Authorization: Basic retailstaff:retailstaff
+Content-Type: application/json
+
+{
+    "txnID": "aaaaaaaa-bbbb-cccc-dddd-aaaaaaaaaaaa",
+    "customer_customerID": "11111111-1111-1111-1111-111111111111",
+    "channel": "Online",
+    "amount": -500,
+    "txnDate": "2026-08-12T15:00:00Z"
+}
+
+
+# ============================================================
+# 14. NEGATIVE TEST - INVALID CUSTOMER
+# ============================================================
+
+### This request MUST FAIL
+POST {{baseUrl}}/Transactions
+Authorization: Basic retailstaff:retailstaff
+Content-Type: application/json
+
+{
+    "txnID": "bbbbbbbb-cccc-dddd-eeee-bbbbbbbbbbbb",
+    "customer_customerID": "aaaaaaaa-1111-2222-3333-aaaaaaaaaaaa",
+    "channel": "Online",
+    "amount": 1000,
+    "txnDate": "2026-08-12T16:00:00Z"
+}
